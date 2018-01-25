@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Container, Row } from 'reactstrap';
 import './App.css';
-import RandomSelect from './components/random_select';
+import Header from './components/header/header';
+import RandomMovie from './components/random_movie/random_movie';
+import RandomShow from './components/random_show/random_show';
 
-class App extends Component {
+export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to Netflix Tinder with React</h1>
-        </header>
 
-          <RandomSelect />
+        <Header />
+        <Container>
+          <Row>
+
+            <RandomMovie />
+            <RandomShow />
+
+          </Row>
+        </Container>
 
       </div>
     );
   }
 }
 
-export default App;

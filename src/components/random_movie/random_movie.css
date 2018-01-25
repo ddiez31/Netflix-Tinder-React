@@ -1,0 +1,8 @@
+.row {
+    justify-content: center;
+}
+
+.card-img {
+    width: 60% !important;
+    align-self: center;
+}
