@@ -1,16 +1,20 @@
-.header-logo {
-    height: 70px;
+.navbar-logo {
+    height: 40px;
 }
 
-.header {
+.navbar {
     background-color: #222;
-    height: 150px;
+    /* height: 150px; */
     width: 100%;
     padding: 20px;
     color: white;
     margin-bottom: 10px;
 }
 
-.header-title {
-    font-size: 1.5em;
+.nav-link {
+    color: white !important;
+}
+
+.navbar-toggler {
+    background-color: white !important;
 }

@@ -12,11 +12,14 @@ export default class App extends Component {
 
         <Header />
         <Container>
+          <h1>Films</h1>
           <Row>
-
             <RandomMovie />
+          </Row>
+          <hr />
+          <h1>Séries</h1>
+          <Row>
             <RandomShow />
-
           </Row>
         </Container>
 

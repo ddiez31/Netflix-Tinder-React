@@ -6,3 +6,13 @@
     width: 60% !important;
     align-self: center;
 }
+
+.media-object {
+    height: 150px;
+    width: 100px;
+    padding: 2px;
+}
+
+.modal-body {
+    text-align: justify;
+}
