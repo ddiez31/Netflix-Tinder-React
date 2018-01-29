@@ -34,6 +34,9 @@ export default class RandomShow extends Component {
     }
 
     componentDidMount() {
+        this.setState({
+            items: []
+        });
         _.times(5, () => {
             fetch(api.show)
             .then(res => res.json())
@@ -69,6 +72,7 @@ export default class RandomShow extends Component {
         } else {
             return (
                 <Media className="mt-1">
+                <Button color="info" onClick={ () => this.componentDidMount() }>Autres séries</Button>
                     <Media right middle href="#" onClick={ this.toggle }>
                         { this.state.items.map((item, index) => <Media object src={ item.image } alt="poster" key={ index } onClick={ () => this.registerItem(item) } />) }    
                     </Media>

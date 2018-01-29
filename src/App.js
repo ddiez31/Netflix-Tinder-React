@@ -1,29 +1,27 @@
 import React, { Component } from 'react';
-import { Container, Row } from 'reactstrap';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { Container } from 'reactstrap';
 import './App.css';
 import Header from './components/header/header';
-import RandomMovie from './components/random_movie/random_movie';
-import RandomShow from './components/random_show/random_show';
+import Random from './components/random/random';
+import Favorites from './components/favorites/favorites';
 
 export default class App extends Component {
   render() {
     return (
-      <div className="App">
-
-        <Header />
-        <Container>
-          <h1>Films</h1>
-          <Row>
-            <RandomMovie />
-          </Row>
-          <hr />
-          <h1>Séries</h1>
-          <Row>
-            <RandomShow />
-          </Row>
-        </Container>
-
-      </div>
+      <Router>
+        <div className="App">
+          <Header />
+          <Container>
+            <Switch>
+              <Route exact path="/" render={ () => (<Redirect to="/random" />) } />          
+              <Route path='/random' component={ Random } />
+              <Route path='/favorites' component={ Favorites } />
+              <Route path="*" render={ () => (<Redirect to="/" />) } />          
+            </Switch>
+          </Container>
+        </div>
+      </Router>
     );
   }
 }

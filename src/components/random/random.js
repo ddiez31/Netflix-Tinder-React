@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Col, Media, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Row, Col, Media, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import _ from 'lodash';
-import './random_movie.css';
+import './random.css';
 import api from '../../modules/api';
 
-export default class RandomMovie extends Component {
+export default class Random extends Component {
     state = {};
     constructor(props) {
         super(props);
@@ -93,6 +93,17 @@ export default class RandomMovie extends Component {
             return <div>Loading...</div>;
         } else {
             return (
+                <div>
+                <h1>Films</h1>
+            <Row>
+              {/*<RandomMovie />*/}
+            </Row>
+            <hr />
+            <h1>Séries</h1>
+            <Row>
+              {/*<RandomShow />*/}
+            </Row>
+            
                 <Media className="mt-1">
                 <Button color="info" onClick={ () => this.componentDidMount() }>Autres films</Button>
                 <Button color="info" onClick={ () => this.viewFavorites() }>voir favoris</Button>
@@ -111,6 +122,7 @@ export default class RandomMovie extends Component {
                         </ModalFooter>
                     </Modal>
                 </Media>
+                </div>
             );         
         }
     }

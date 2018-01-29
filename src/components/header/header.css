@@ -7,12 +7,15 @@
     /* height: 150px; */
     width: 100%;
     padding: 20px;
-    color: white;
     margin-bottom: 10px;
 }
 
-.nav-link {
+a {
     color: white !important;
+}
+
+.nav-item {
+    padding: 0 20px;
 }
 
 .navbar-toggler {
