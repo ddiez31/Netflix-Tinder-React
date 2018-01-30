@@ -1,6 +1,6 @@
 // Load dependencies
 import React, { Component } from 'react';
-import { Col, Media, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Col, Media, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import _ from 'lodash';
 
@@ -17,14 +17,22 @@ export default class RandomMovie extends Component {
             isLoaded: false,
             modal: false,
             items: [],
-            activeItem: []
+            activeItem: [],
+            visible: false
         };
         this.toggle = this.toggle.bind(this);
+        this.onDismiss = this.onDismiss.bind(this);
     }    
 
     toggle() {
         this.setState({
-            modal: !this.state.modal,
+            modal: !this.state.modal
+        });
+    }
+
+    onDismiss() {
+        this.setState({
+            visible: true
         });
     }
 
@@ -43,17 +51,41 @@ export default class RandomMovie extends Component {
     
     // Save values of selected item in local storage
     addFavorites() {
-        const actualItems = localStorage.getItem('myFavoritesMovies');
-        let favoriteItem = this.state.activeItem;
-        console.log(JSON.stringify(favoriteItem));
-    
-        actualItems == null ?
-            localStorage.setItem('myFavoritesMovies', JSON.stringify(favoriteItem)) : 
-            localStorage.setItem('myFavoritesMovies', actualItems + JSON.stringify(favoriteItem));
-        
-        // actualItems.id === this.state.activeItem[0].id ?
-        //     console.log('déjà dans les favoris') :
-        // console.log(JSON.parse(actualItems['id']) + '//' + this.state.activeItem[0].id);
+        let favoritesStored = localStorage.getItem('myFavoritesMovies');
+        let newFavorite = this.state.activeItem;
+
+        // Check if value storage
+        favoritesStored == null ?
+            localStorage.setItem('myFavoritesMovies', JSON.stringify(newFavorite)) :
+            (
+                favoritesStored = JSON.parse(favoritesStored),
+                favoritesStored.map(item => 
+                    item.id === newFavorite[0].id ?
+                        (
+                            this.setState({
+                                visible: true
+                            })
+                        ) :
+                        (
+                            favoritesStored.push(newFavorite[0]), // Join new favorite to actual storage favorites
+                            localStorage.setItem('myFavoritesMovies', JSON.stringify(favoritesStored))
+                        )
+                )
+            );
+            
+            
+        favoritesStored = localStorage.getItem('myFavoritesMovies');
+        console.log(favoritesStored);
+    }
+
+    compareApiWithStorage(result) {
+        let favoritesStored = localStorage.getItem('myFavoritesMovies');
+        favoritesStored = JSON.parse(favoritesStored),
+            favoritesStored.map(item => 
+                item.id === result.id ?
+                    console.log('déjà présent dans les favoris') :
+                    console.log('rien en base')
+            );
     }
 
     // Actions on loading page
@@ -66,6 +98,7 @@ export default class RandomMovie extends Component {
             .then(res => res.json())
             .then(
                 (result) => {
+                    this.compareApiWithStorage(result),
                     this.setState({
                         isLoaded: true,
                         items: [...this.state.items, { // Push response in the state
@@ -120,6 +153,9 @@ export default class RandomMovie extends Component {
                                 <ModalFooter>
                                     <Button color="primary" onClick={ () => this.addFavorites() }>Ajouter aux favoris</Button>{' '}
                                 </ModalFooter>
+                                <Alert color="warning" isOpen={ this.state.visible } toggle={ this.onDismiss }>
+                                    Déjà présent dans les favoris!
+                                </Alert>
                             </Modal>
                         </Col>
                     </Media>

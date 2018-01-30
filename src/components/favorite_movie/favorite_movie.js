@@ -32,7 +32,7 @@ export default class FavoriteMovie extends Component {
             items: localStorage.getItem('myFavoritesMovies'),
             isLoaded: true
         });
-        console.log(this.state.items);
+        console.log(localStorage.getItem('myFavoritesMovies'));
     }
     
     // Front view
