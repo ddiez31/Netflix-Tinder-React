@@ -1,6 +1,9 @@
+// Load dependencies
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { Container } from 'reactstrap';
+
+// Load styles, modules, components
 import './App.css';
 import Header from './components/header/header';
 import Random from './components/random/random';
@@ -11,8 +14,9 @@ export default class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Header />
+          <Header /> {/* Call header menu for all pages */}
           <Container>
+            {/* Define routes for links */}
             <Switch>
               <Route exact path="/" render={ () => (<Redirect to="/random" />) } />          
               <Route path='/random' component={ Random } />

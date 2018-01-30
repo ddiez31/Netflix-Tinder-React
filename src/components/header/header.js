@@ -1,16 +1,19 @@
+// Load dependencies
 import React, { Component } from 'react';
-import { BrowserRouter as Route, Link } from 'react-router-dom';
+import { BrowserRouter as Route, Link, NavLink } from 'react-router-dom';
 import { Collapse, Navbar, NavbarToggler, Nav, NavItem } from 'reactstrap';
+
+// Load styles, modules, components
 import logo from '../img/Netflix_logo.png';
 import './header.css';
 
 export default class Header extends Component {
   constructor(props) {
     super(props);  
-    this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false
     };
+    this.toggle = this.toggle.bind(this);
   }
 
   toggle() {
@@ -27,10 +30,10 @@ export default class Header extends Component {
           <Collapse isOpen={ this.state.isOpen } navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <Link to={ '/random' }>Sélection aléatoire</Link>
+                <NavLink to={ '/random' }>Sélection aléatoire</NavLink>
               </NavItem>
               <NavItem>
-                <Link to={ '/favorites' }>Mes favoris</Link>            
+                <NavLink to={ '/favorites' }>Mes favoris</NavLink>            
               </NavItem>
              </Nav>
           </Collapse>
