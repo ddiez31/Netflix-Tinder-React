@@ -1,7 +1,6 @@
 // Load dependencies
 import React, { Component } from 'react';
-import { Col, Media, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap';
-import FontAwesome from 'react-fontawesome';
+import { Col, Media, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import _ from 'lodash';
 
 // Load styles, modules, components
@@ -17,75 +16,15 @@ export default class RandomMovie extends Component {
             isLoaded: false,
             modal: false,
             items: [],
-            activeItem: [],
-            visible: false
+            activeItem: []
         };
         this.toggle = this.toggle.bind(this);
-        this.onDismiss = this.onDismiss.bind(this);
     }    
 
     toggle() {
         this.setState({
             modal: !this.state.modal
         });
-    }
-
-    onDismiss() {
-        this.setState({
-            visible: true
-        });
-    }
-
-    // Storage values of selected item
-    registerItem(item) {
-        this.setState({
-            activeItem: [{
-                        'id': item.id,
-                        'title': item.title,
-                        'year': item.year,
-                        'overview': item.overview,
-                        'image': 'https://img.reelgood.com/content/movie/' + item.id + '/poster-92.jpg'
-                        }]
-        });
-    }
-    
-    // Save values of selected item in local storage
-    addFavorites() {
-        let favoritesStored = localStorage.getItem('myFavoritesMovies');
-        let newFavorite = this.state.activeItem;
-
-        // Check if value storage
-        favoritesStored == null ?
-            localStorage.setItem('myFavoritesMovies', JSON.stringify(newFavorite)) :
-            (
-                favoritesStored = JSON.parse(favoritesStored),
-                favoritesStored.map(item => 
-                    item.id === newFavorite[0].id ?
-                        (
-                            this.setState({
-                                visible: true
-                            })
-                        ) :
-                        (
-                            favoritesStored.push(newFavorite[0]), // Join new favorite to actual storage favorites
-                            localStorage.setItem('myFavoritesMovies', JSON.stringify(favoritesStored))
-                        )
-                )
-            );
-            
-            
-        favoritesStored = localStorage.getItem('myFavoritesMovies');
-        console.log(favoritesStored);
-    }
-
-    compareApiWithStorage(result) {
-        let favoritesStored = localStorage.getItem('myFavoritesMovies');
-        favoritesStored = JSON.parse(favoritesStored),
-            favoritesStored.map(item => 
-                item.id === result.id ?
-                    console.log('déjà présent dans les favoris') :
-                    console.log('rien en base')
-            );
     }
 
     // Actions on loading page
@@ -98,7 +37,6 @@ export default class RandomMovie extends Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    this.compareApiWithStorage(result),
                     this.setState({
                         isLoaded: true,
                         items: [...this.state.items, { // Push response in the state
@@ -120,7 +58,35 @@ export default class RandomMovie extends Component {
             )
         })     
     }
+
+    // Storage values of selected item
+    registerItem(item) {
+        this.setState({
+            activeItem: [{
+                        'id': item.id,
+                        'title': item.title,
+                        'year': item.year,
+                        'overview': item.overview,
+                        'image': item.image
+                        }]
+        });
+    }
     
+    // Save values of selected item in local storage
+    addFavorites() {
+        let favoritesStored = localStorage.getItem('myFavoritesMovies');
+        let newFavorite = this.state.activeItem;
+
+        // Check if value storage
+        favoritesStored == null ?
+            localStorage.setItem('myFavoritesMovies', JSON.stringify(newFavorite)) :
+            (
+                favoritesStored = JSON.parse(favoritesStored),
+                favoritesStored.push(newFavorite[0]), // Join new favorite to actual storage favorites
+                localStorage.setItem('myFavoritesMovies', JSON.stringify(favoritesStored))
+            );
+    }
+  
     // Front view
     render() {
         const { error, isLoaded } = this.state;
@@ -153,9 +119,6 @@ export default class RandomMovie extends Component {
                                 <ModalFooter>
                                     <Button color="primary" onClick={ () => this.addFavorites() }>Ajouter aux favoris</Button>{' '}
                                 </ModalFooter>
-                                <Alert color="warning" isOpen={ this.state.visible } toggle={ this.onDismiss }>
-                                    Déjà présent dans les favoris!
-                                </Alert>
                             </Modal>
                         </Col>
                     </Media>

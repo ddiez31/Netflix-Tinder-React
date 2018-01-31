@@ -1,7 +1,6 @@
 // Load dependencies
 import React, { Component } from 'react';
 import { Col, Media, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import FontAwesome from 'react-fontawesome';
 import _ from 'lodash';
 
 // Load styles, modules, components 
@@ -28,29 +27,6 @@ export default class RandomShow extends Component {
         });
     }
 
-    // Storage values of selected item
-    registerItem(item) {
-        this.setState({
-            activeItem: [{
-                        'id': item.id,
-                        'title': item.title,
-                        'year': item.year,
-                        'overview': item.overview,
-                        'image': 'https://img.reelgood.com/content/show/' + item.id + '/poster-92.jpg'
-                        }]
-        });
-    }
-    
-    // Save values of selected item in local storage
-    addFavorites() {
-        const actualItems = localStorage.getItem('myFavoritesShows');
-        let favoriteItem = this.state.activeItem;
-        
-        actualItems == null ?
-            localStorage.setItem('myFavoritesShows', JSON.stringify(favoriteItem)) : 
-            localStorage.setItem('myFavoritesShows', actualItems + JSON.stringify(favoriteItem));
-    }
-
     // Actions on loading page
     componentDidMount() {
         this.setState({
@@ -64,6 +40,7 @@ export default class RandomShow extends Component {
                     this.setState({
                         isLoaded: true,
                         items: [...this.state.items, { // Push response in the state
+                                    'id': result.id,        
                                     'title': result.title,
                                     'year': new Date(new Date(result.released_on).toUTCString()).getUTCFullYear(),
                                     'overview': result.overview,
@@ -80,6 +57,34 @@ export default class RandomShow extends Component {
                 }
             )
         })
+    }
+
+    // Storage values of selected item
+    registerItem(item) {
+        this.setState({
+            activeItem: [{
+                        'id': item.id,
+                        'title': item.title,
+                        'year': item.year,
+                        'overview': item.overview,
+                        'image': item.image
+                        }]
+        });
+    }
+    
+    // Save values of selected item in local storage
+    addFavorites() {
+        let favoritesStored = localStorage.getItem('myFavoritesShows');
+        let newFavorite = this.state.activeItem;
+
+        // Check if value storage
+        favoritesStored === null ?
+            localStorage.setItem('myFavoritesShows', JSON.stringify(newFavorite)) :
+            (
+                favoritesStored = JSON.parse(favoritesStored),
+                favoritesStored.push(newFavorite[0]), // Join new favorite to actual storage favorites
+                localStorage.setItem('myFavoritesShows', JSON.stringify(favoritesStored))
+            );
     }
 
     // Front view
